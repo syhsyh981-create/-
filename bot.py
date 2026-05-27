@@ -45,11 +45,12 @@ async def 반복(ctx, hours: int, interval: int, *, message):
 
         try:
             while True:
-                await asyncio.sleep(interval_sec)
 
-                # 시간 초과 체크
+                # ✅ 수정된 부분 (시간 체크 먼저)
                 if time.time() - start_time >= duration:
                     break
+
+                await asyncio.sleep(interval_sec)
 
                 count += 1
                 await ctx.send(f"[{count}] {message}")
