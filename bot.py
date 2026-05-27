@@ -46,10 +46,8 @@ async def 반복(ctx, hours: int, interval: int, *, message):
         try:
             while True:
 
-                # 🔥 먼저 대기 (핵심 수정)
                 await asyncio.sleep(interval_sec)
 
-                # 시간 초과 체크
                 if time.time() - start_time >= duration:
                     break
 
@@ -76,7 +74,41 @@ async def 중지(ctx):
     active_tasks[user_id].cancel()
     del active_tasks[user_id]
 
-# 🔥 위치 수정 (여기로 올림)
+# =========================================
+# 🔥 추가된 명령어: !1시간
+# =========================================
+@bot.command()
+async def 1시간(ctx, *, message):
+
+    user_id = ctx.author.id
+
+    if user_id in active_tasks:
+        active_tasks[user_id].cancel()
+
+    interval_sec = 9 * 60
+    repeat_count = 7
+
+    await ctx.send("9분 간격 7회 반복 시작!")
+
+    async def repeat_alarm():
+
+        try:
+            for i in range(repeat_count):
+
+                if i == 0:
+                    await ctx.send(f"[1/{repeat_count}] {message}")
+                else:
+                    await asyncio.sleep(interval_sec)
+                    await ctx.send(f"[{i+1}/{repeat_count}] {message}")
+
+            await ctx.send("반복 종료!")
+
+        except asyncio.CancelledError:
+            await ctx.send("반복이 중지되었습니다.")
+
+    task = bot.loop.create_task(repeat_alarm())
+    active_tasks[user_id] = task
+
 print("NEW CODE LOADED")
 
 bot.run(TOKEN)
