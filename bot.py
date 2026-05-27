@@ -77,9 +77,9 @@ async def 중지(ctx):
 # =========================================
 # 🔥 추가된 명령어: !1시간
 # =========================================
-@bot.command()
-async def 1시간(ctx, *, message):
-
+@bot.command(name="1시간")
+async def one_hour(ctx, *, message):
+    
     user_id = ctx.author.id
 
     if user_id in active_tasks:
