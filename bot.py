@@ -46,11 +46,12 @@ async def 반복(ctx, hours: int, interval: int, *, message):
         try:
             while True:
 
-                # ✅ 수정된 부분 (시간 체크 먼저)
+                # 🔥 먼저 대기 (핵심 수정)
+                await asyncio.sleep(interval_sec)
+
+                # 시간 초과 체크
                 if time.time() - start_time >= duration:
                     break
-
-                await asyncio.sleep(interval_sec)
 
                 count += 1
                 await ctx.send(f"[{count}] {message}")
@@ -75,5 +76,7 @@ async def 중지(ctx):
     active_tasks[user_id].cancel()
     del active_tasks[user_id]
 
-bot.run(TOKEN)
+# 🔥 위치 수정 (여기로 올림)
 print("NEW CODE LOADED")
+
+bot.run(TOKEN)
