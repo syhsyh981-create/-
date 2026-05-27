@@ -76,3 +76,4 @@ async def 중지(ctx):
     del active_tasks[user_id]
 
 bot.run(TOKEN)
+print("NEW CODE LOADED")
